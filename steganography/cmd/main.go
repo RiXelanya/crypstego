@@ -3,10 +3,9 @@ package main
 import (
 	"bufio"
 	"bytes"
-	"fmt"
 	"image"
-	"net/http"
 	"os"
+
 	"github.com/auyer/steganography"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -28,12 +27,19 @@ func decode(c echo.Context) error {
 		return err
 	}
 
-	sizeOfMessage := steganography.GetMessageSizeFromImage(img) 
+	sizeOfMessage := steganography.GetMessageSizeFromImage(img)
 
-	msg := steganography.Decode(sizeOfMessage, img) 
+	msg := steganography.Decode(sizeOfMessage, img)
 	message := string(msg[:])
-
-	return c.String(http.StatusOK, message)
+	outFile, err := os.Create("message.txt")
+	if err != nil {
+		return err
+	}
+	os.WriteFile("message.txt", []byte(message), 0777)
+	defer outFile.Close()
+	c.Response().After(func() { os.Remove("message.txt") })
+	return c.Attachment("message.txt", "message.txt")
+	// return c.String(http.StatusOK, message)
 
 }
 
@@ -55,11 +61,11 @@ func encode(c echo.Context) error {
 		return err
 	}
 	encodedImg := new(bytes.Buffer)
-	err = steganography.Encode(encodedImg, img, msg) // Calls library and Encodes the message into a new buffer
+	err = steganography.Encode(encodedImg, img, msg)
 	if err != nil {
 		return err
 	}
-	outFile, err := os.Create("encoded.png") // Creates file to write the message into
+	outFile, err := os.Create("encoded.png")
 	if err != nil {
 		return err
 	}
