@@ -2,15 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Single file upload</title>
+    <title>Steganography Encryption</title>
 </head>
-<body>
-<h1>Upload single file with fields</h1>
+<body style="background-color:beige">
+  <nav>
+    <a href=/decode.html style="color:white;background-color:DarkGreen">decode  |</a><a href=/encode.html style="color:purple;background-color:DarkGray">  encode</a>
+  </nav>
+<h1>Upload file and secret messages here</h1>
 
 <form action="/encode" method="post" enctype="multipart/form-data">
     Secret Message: <input type="text" name="message"><br>
-    Files: <input type="file" name="file"><br><br>
-    <input type="submit" value="Submit">
+    File: <input type="file" name="file"><br><br>
+    <input type="submit" value="Submit here">
 </form>
 </body>
 </html>
