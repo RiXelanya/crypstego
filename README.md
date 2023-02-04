@@ -1,13 +1,6 @@
-go to crypstego/steganography/cmd and do 
+First clone this repoitory to your machine
+Then make sure you have kubernetes and docker on your machine
+Then apply the following command
+kubectl apply -f crypstegokube.yaml
 
-go run main.go
-
-or execute the executable file
-
-Then go to localhost:1323/encode.html
-
-Upload png file and the secret message
-
-Then go to localhost:1323/decode.html
-
-upload the encoded png file to retrive back the message 
+After applying this go to http://localhost:30007/encode.html
