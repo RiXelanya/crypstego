@@ -100,7 +100,7 @@ func comm(message string, routemap string) []byte {
 func main() {
 	e := echo.New()
 
-	//e.Use(middleware.Logger())
+	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.Secure())
 
