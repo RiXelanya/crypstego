@@ -36,8 +36,15 @@ func decode(c echo.Context) error {
 	msg := steganography.Decode(sizeOfMessage, img)
 	message := string(msg[:])
 	var routemap string = "decrypt"
-
-	return c.String(http.StatusOK, string(comm(message, routemap)))
+	txt := string(comm(message, routemap))
+	outFile, err := os.Create("message.txt")
+	if err != nil {
+		return err
+	}
+	os.WriteFile("message.txt", []byte(txt), 0777)
+	defer outFile.Close()
+	c.Response().After(func() { os.Remove("message.txt") })
+	return c.Attachment("message.txt", "message.txt")
 
 }
 
@@ -77,7 +84,7 @@ func encode(c echo.Context) error {
 }
 
 func comm(message string, routemap string) []byte {
-	var url string = "http://127.0.0.1:1324/"
+	var url string = "http://encrypstego:1324/"
 	url = url + routemap
 	var r bytes.Buffer
 	w := multipart.NewWriter(&r)

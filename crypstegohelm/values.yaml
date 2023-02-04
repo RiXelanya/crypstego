@@ -1,0 +1,24 @@
+crypstego:
+  crypstego:
+    image:
+      repository: rixelanya/crypstego
+      tag: stego-kube-0.0.2
+  ports:
+  - nodePort: 30007
+    port: 1323
+    protocol: TCP
+    targetPort: 1323
+  replicas: 2
+  type: NodePort
+encrypstego:
+  encrypstego:
+    image:
+      repository: rixelanya/crypstego
+      tag: encr-0.0.2
+  ports:
+  - port: 1324
+    protocol: TCP
+    targetPort: 1324
+  replicas: 2
+  type: ClusterIP
+kubernetesClusterDomain: cluster.local

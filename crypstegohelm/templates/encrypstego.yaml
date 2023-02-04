@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "crypstegohelm.fullname" . }}-encrypstego
+  labels:
+  {{- include "crypstegohelm.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.encrypstego.type }}
+  selector:
+    app: encrypstego
+  {{- include "crypstegohelm.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.encrypstego.ports | toYaml | nindent 2 -}}

@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "crypstegohelm.fullname" . }}-encrypstego
+  labels:
+    app: encrypstego
+  {{- include "crypstegohelm.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.encrypstego.replicas }}
+  selector:
+    matchLabels:
+      app: encrypstego
+    {{- include "crypstegohelm.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: encrypstego
+      {{- include "crypstegohelm.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ .Values.kubernetesClusterDomain }}
+        image: {{ .Values.encrypstego.encrypstego.image.repository }}:{{ .Values.encrypstego.encrypstego.image.tag
+          | default .Chart.AppVersion }}
+        name: encrypstego
+        ports:
+        - containerPort: 1324
+        resources: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "crypstegohelm.fullname" . }}-crypstego
+  labels:
+    app: crypstego
+  {{- include "crypstegohelm.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.crypstego.replicas }}
+  selector:
+    matchLabels:
+      app: crypstego
+    {{- include "crypstegohelm.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: crypstego
+      {{- include "crypstegohelm.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ .Values.kubernetesClusterDomain }}
+        image: {{ .Values.crypstego.crypstego.image.repository }}:{{ .Values.crypstego.crypstego.image.tag
+          | default .Chart.AppVersion }}
+        name: crypstego
+        ports:
+        - containerPort: 1323
+        resources: {}
